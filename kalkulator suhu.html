@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Suhu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box; /* Agar padding tidak menambah lebar */
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            font-size: 1.1em;
+            color: #333;
+            text-align: center;
+            border-left: 5px solid #007bff;
+        }
+
+        .result strong {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h1>Konversi Suhu</h1>
+    
+    <div class="input-group">
+        <label for="celsius">Celsius (°C):</label>
+        <input type="number" id="celsius" oninput="convertTemp('C')">
+    </div>
+
+    <div class="input-group">
+        <label for="fahrenheit">Fahrenheit (°F):</label>
+        <input type="number" id="fahrenheit" oninput="convertTemp('F')">
+    </div>
+
+    <div class="input-group">
+        <label for="kelvin">Kelvin (K):</label>
+        <input type="number" id="kelvin" oninput="convertTemp('K')">
+    </div>
+    
+    <div class="result" id="result-box">
+        Masukkan nilai suhu di salah satu kolom untuk memulai konversi.
+    </div>
+</div>
+
+<script>
+    function convertTemp(unit) {
+        // Ambil nilai dari input
+        const cInput = document.getElementById('celsius');
+        const fInput = document.getElementById('fahrenheit');
+        const kInput = document.getElementById('kelvin');
+        const resultBox = document.getElementById('result-box');
+        
+        // Cek jika input kosong atau bukan angka
+        if (isNaN(cInput.value) || isNaN(fInput.value) || isNaN(kInput.value)) {
+            resultBox.innerHTML = "Input harus berupa angka.";
+            return;
+        }
+
+        let c, f, k;
+        let originalValue;
+        
+        switch (unit) {
+            case 'C':
+                originalValue = parseFloat(cInput.value);
+                if (originalValue === '') {
+                    clearInputs(cInput, fInput, kInput, resultBox);
+                    return;
+                }
+                c = originalValue;
+                f = (c * 9/5) + 32;
+                k = c + 273.15;
+                break;
+                
+            case 'F':
+                originalValue = parseFloat(fInput.value);
+                if (originalValue === '') {
+                    clearInputs(cInput, fInput, kInput, resultBox);
+                    return;
+                }
+                f = originalValue;
+                c = (f - 32) * 5/9;
+                k = c + 273.15;
+                break;
+
+            case 'K':
+                originalValue = parseFloat(kInput.value);
+                if (originalValue === '') {
+                    clearInputs(cInput, fInput, kInput, resultBox);
+                    return;
+                }
+                k = originalValue;
+                c = k - 273.15;
+                f = (c * 9/5) + 32;
+                break;
+        }
+
+        // Tampilkan hasil (dibatasi 2 desimal)
+        if (originalValue !== '' && !isNaN(originalValue)) {
+            cInput.value = c.toFixed(2);
+            fInput.value = f.toFixed(2);
+            kInput.value = k.toFixed(2);
+            
+            resultBox.innerHTML = `Hasil konversi: <strong>${c.toFixed(2)} °C</strong> | <strong>${f.toFixed(2)} °F</strong> | <strong>${k.toFixed(2)} K</strong>`;
+        } else {
+            clearInputs(cInput, fInput, kInput, resultBox);
+        }
+    }
+    
+    function clearInputs(cInput, fInput, kInput, resultBox) {
+        cInput.value = '';
+        fInput.value = '';
+        kInput.value = '';
+        resultBox.innerHTML = "Masukkan nilai suhu di salah satu kolom untuk memulai konversi.";
+    }
+    
+    // Panggil sekali untuk memastikan semua input kosong saat dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        const cInput = document.getElementById('celsius');
+        const fInput = document.getElementById('fahrenheit');
+        const kInput = document.getElementById('kelvin');
+        const resultBox = document.getElementById('result-box');
+        clearInputs(cInput, fInput, kInput, resultBox);
+    });
+</script>
+
+</body>
+</html>
