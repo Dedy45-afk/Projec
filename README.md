@@ -1,2 +1,2 @@
-# CV-Web-Based
-ini adalah projek latihan saya membuat sebuah cv menggunakan fungsi html&amp;css
+# Kalkulator suhu-web based
+ini adalah projek latihan saya membuat sebuah kalkulator menggunakan fungsi html&amp;css
